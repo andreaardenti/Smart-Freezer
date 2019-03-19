@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/sn_com_list"
+            android:layout_width="0dp"
+            android:layout_weight=".50"
+            android:layout_height="30dp"
+            android:layout_marginRight="5dp" />
+
+        <Button
+            android:id="@+id/btn_connect"
+            style="?android:attr/absListViewStyle"
+            android:layout_width="0dp"
+            android:layout_weight=".50"
+            android:layout_height="30dp"
+            android:text="Connect"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_disconnect"
+            style="?android:attr/absListViewStyle"
+            android:layout_width="0dp"
+            android:layout_weight=".50"
+            android:layout_height="30dp"
+            android:text="Disconnect"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_information"
+            style="?android:attr/absListViewStyle"
+            android:layout_width="0dp"
+            android:layout_weight=".50"
+            android:layout_height="30dp"
+            android:text="Information"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btn_open_door"
+        style="?android:attr/absListViewStyle"
+        android:layout_width="0dp"
+        android:layout_weight=".50"
+        android:layout_height="30dp"
+        android:text="Open Door"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btn_get_status"
+        style="?android:attr/absListViewStyle"
+        android:layout_width="0dp"
+        android:layout_weight=".50"
+        android:layout_height="30dp"
+        android:text="Get Status"
+        android:textSize="12sp" />
+    <Button
+        android:id="@+id/test_api"
+        style="?android:attr/absListViewStyle"
+        android:layout_width="0dp"
+        android:layout_weight=".50"
+        android:layout_height="30dp"
+        android:text="Test  API"
+        android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_enable_polling"
+            style="?android:attr/absListViewStyle"
+            android:layout_width="0dp"
+            android:layout_weight=".50"
+            android:layout_height="30dp"
+            android:layout_marginTop="0px"
+            android:text="Enable remote polling"
+            android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btn_stop_polling"
+        style="?android:attr/absListViewStyle"
+        android:layout_width="0dp"
+        android:layout_weight=".50"
+        android:layout_height="30dp"
+        android:text="Stop remote polling"
+        android:textSize="12sp" />
+    </LinearLayout>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/sn_com_list2"
+            android:layout_width="0dp"
+            android:layout_weight=".50"
+            android:layout_height="30dp"
+            android:layout_marginRight="5dp" />
+
+        <Button
+            android:id="@+id/btn_connect2"
+            style="?android:attr/absListViewStyle"
+            android:layout_width="0dp"
+            android:layout_weight=".50"
+            android:layout_height="30dp"
+            android:text="Connect"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_get_info"
+            style="?android:attr/absListViewStyle"
+            android:layout_width="0dp"
+            android:layout_weight=".50"
+            android:layout_height="30dp"
+            android:text="Get info"
+            android:textSize="12sp" />
+        <Button
+            android:id="@+id/btn_read_tags"
+            style="?android:attr/absListViewStyle"
+            android:layout_width="0dp"
+            android:layout_weight=".50"
+            android:layout_height="30dp"
+            android:text="Read Tags"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="230dp"
+        android:scrollbars="vertical"
+        android:fillViewport="true">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="TextView" />
+
+
+    </ScrollView>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_read_logs"
+            style="?android:attr/absListViewStyle"
+            android:layout_width="0dp"
+            android:layout_weight=".50"
+            android:layout_height="30dp"
+            android:text="Read Log"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_clear_logs"
+            style="?android:attr/absListViewStyle"
+            android:layout_width="0dp"
+            android:layout_weight=".50"
+            android:layout_height="30dp"
+            android:text="Clear Log"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+</LinearLayout>
