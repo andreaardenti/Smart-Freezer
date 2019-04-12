@@ -374,6 +374,20 @@ public class MainActivity extends Activity implements OnClickListener
 
     //public boolean read
 
+    private void sendTag() {
+        Vector<ISO15693Tag> tagList=inventory.readTagsList(m_reader);
+
+        String[] codes = new String[tagList.size()];
+        for (int i = 0; i < tagList.size(); i++) {
+            String code = Base64.encodeToString(tagList.get(i).uid, Base64.DEFAULT);
+            codes[i] = code;
+            tv.append("\ncode: " + code);
+        }
+        // System.out.println("element:" + inventory.vectorISO15693TagToJsonObject(tagList));
+        scrollView.scrollTo(0, 0);
+        remoteProxy.postInventory(inventory.vectorISO15693TagToJsonObject(tagList));
+    }
+
 	public void onClick(View v)
 	{
 		switch (v.getId())
@@ -404,21 +418,19 @@ public class MainActivity extends Activity implements OnClickListener
                 break;
         case R.id.btn_read_tags:
 
-                Vector<ISO15693Tag> tagList=inventory.readTagsList(m_reader);
+            Vector<ISO15693Tag> tagList=inventory.readTagsList(m_reader);
 
-                String[] codes = new String[tagList.size()];
-                for (int i = 0; i < tagList.size(); i++) {
-                    String code = Base64.encodeToString(tagList.get(0).uid, Base64.DEFAULT);
-                    codes[i] = code;
-                    tv.append("\ncode: " + code);
-                }
-                // System.out.println("element:" + inventory.vectorISO15693TagToJsonObject(tagList));
-                scrollView.scrollTo(0, 0);
-                //remoteProxy.postInventoryArray(new JSONArray(tagList));
-                //byte[] decode = Base64.decode(code, Base64.DEFAULT);
-                remoteProxy.postInventory3(codes[0], tv);
+            String[] codes = new String[tagList.size()];
+            for (int i = 0; i < tagList.size(); i++) {
+                String code = Base64.encodeToString(tagList.get(i).uid, Base64.DEFAULT);
+                codes[i] = code;
+                tv.append("\ncode: " + code);
+            }
+            // System.out.println("element:" + inventory.vectorISO15693TagToJsonObject(tagList));
+            scrollView.scrollTo(0, 0);
+            remoteProxy.postInventory(inventory.vectorISO15693TagToJsonObject(tagList));
 
-                break;
+            break;
         case R.id.btn_get_info:
                 this.getInformation();
                 break;
@@ -451,22 +463,23 @@ public class MainActivity extends Activity implements OnClickListener
             while(pollingRunning){
                 try {
                     Thread.sleep(1000);
-                    System.out.println("************** RESTA CHIUSO **************\n");
+                    //System.out.println("************** RESTA CHIUSO **************\n");
                     lock=remoteProxy.checkLockStatus();
                     System.out.println("LOCK STATUS: "+lock+"\n");
-                    if(!lock) {//se lock è falso, quindi devo aprire il frigo
-                        System.out.println("************** APRI FRIGO **************\n");
+                    if(!lock) { // così il frigo è aperto
+                        //System.out.println("************** APRI FRIGO **************\n");
                         if(openLock()) {
-                            System.out.println("************** FRIGO APERTO **************\n");
+                            //System.out.println("************** FRIGO APERTO **************\n");
                             //TODO togliere pausa 3 s e esempio "prendo da frigo"
                             //System.out.println("PRENDO ROBA DAL FRIGO......\n");
                             //Thread.sleep(3000);
                             //System.out.println("FINITO, CHIUDO FRIGO FRIGO......\n");
-                            while(!getLockStatus()){//polling che verifica se il frigo è chiuso
+                            while(getLockStatus()){//polling che verifica se il frigo è chiuso
                                 System.out.println("ATTENDO CHIUSURA FRIGO......\n");
                                 Thread.sleep(500);
                             }
-                            System.out.println("HO CHIUSO IL FRIGO, MANDO ELENCO PRODOTTI.....\n");
+                            //System.out.println("HO CHIUSO IL FRIGO, MANDO ELENCO PRODOTTI.....\n");
+                            sendTag();
                         }
                         else
                             System.out.println("************** PROBLEMA APERTURA FRIGO **************\n");
