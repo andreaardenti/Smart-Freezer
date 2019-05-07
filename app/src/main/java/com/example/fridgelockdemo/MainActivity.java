@@ -364,19 +364,18 @@ public class MainActivity extends Activity implements OnClickListener
         if (doorFlg[0]==0)
         {
             LOGGER.log(Level.INFO, "The door is closed.");
-            return true;
+            //originale tornava true
+            return false;
         }
         else {
             LOGGER.log(Level.INFO, "The door is open.");
-            return false;
+            return true;
         }
     }
 
     //public boolean read
-
     private void sendTag() {
         Vector<ISO15693Tag> tagList=inventory.readTagsList(m_reader);
-
         String[] codes = new String[tagList.size()];
         for (int i = 0; i < tagList.size(); i++) {
             String code = Base64.encodeToString(tagList.get(i).uid, Base64.DEFAULT);
@@ -417,9 +416,7 @@ public class MainActivity extends Activity implements OnClickListener
                 this.connect2();
                 break;
         case R.id.btn_read_tags:
-
             Vector<ISO15693Tag> tagList=inventory.readTagsList(m_reader);
-
             String[] codes = new String[tagList.size()];
             for (int i = 0; i < tagList.size(); i++) {
                 String code = Base64.encodeToString(tagList.get(i).uid, Base64.DEFAULT);
@@ -429,7 +426,6 @@ public class MainActivity extends Activity implements OnClickListener
             // System.out.println("element:" + inventory.vectorISO15693TagToJsonObject(tagList));
             scrollView.scrollTo(0, 0);
             remoteProxy.postInventory(inventory.vectorISO15693TagToJsonObject(tagList));
-
             break;
         case R.id.btn_get_info:
                 this.getInformation();
@@ -456,7 +452,6 @@ public class MainActivity extends Activity implements OnClickListener
         remoteProxy.postInventory3("", tv);
     }
 
-
     private class Polling extends Thread {
         public void run() {
             boolean lock=remoteProxy.checkLockStatus();
@@ -468,15 +463,16 @@ public class MainActivity extends Activity implements OnClickListener
                     System.out.println("LOCK STATUS: "+lock+"\n");
                     if(!lock) { // così il frigo è aperto
                         //System.out.println("************** APRI FRIGO **************\n");
+                        //openlock controlla l'apertura se è false va nell'else e esegue setlockstatus
                         if(openLock()) {
                             //System.out.println("************** FRIGO APERTO **************\n");
-                            //TODO togliere pausa 3 s e esempio "prendo da frigo"
+                            //TODO togliere pausa 3s e esempio "prendo da frigo"
                             //System.out.println("PRENDO ROBA DAL FRIGO......\n");
-                            //Thread.sleep(3000);
+                            Thread.sleep(3000);
                             //System.out.println("FINITO, CHIUDO FRIGO FRIGO......\n");
                             while(getLockStatus()){//polling che verifica se il frigo è chiuso
                                 System.out.println("ATTENDO CHIUSURA FRIGO......\n");
-                                Thread.sleep(500);
+                                Thread.sleep(2000);
                             }
                             //System.out.println("HO CHIUSO IL FRIGO, MANDO ELENCO PRODOTTI.....\n");
                             sendTag();
@@ -485,6 +481,7 @@ public class MainActivity extends Activity implements OnClickListener
                             System.out.println("************** PROBLEMA APERTURA FRIGO **************\n");
 
                         //If I'm here the fridge is closed, I communicate it to the server API
+                        //provare a commentare la riga sotto. è lei che setta la chiusura del frigo
                         remoteProxy.setLockStatus();
                     }
 

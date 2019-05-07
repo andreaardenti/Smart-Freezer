@@ -1,17 +1,10 @@
 package com.network;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.widget.TextView;
-
 import com.example.fridgelockdemo.MainActivity;
-
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,6 +21,7 @@ public class RemoteProxy extends AsyncTask {
     private int fridge;
     private String user;
     private static final Logger LOGGER = Logger.getLogger( MainActivity.class.getName() );
+
 
     public RemoteProxy() {
         this.urlAPI = "https://smart-freezers.herokuapp.com/freezers/";
@@ -81,25 +75,22 @@ public class RemoteProxy extends AsyncTask {
         boolean lockStatus=true;
         JSONObject response;
         try {
-            //System.out.println("URL: "+this.urlAPI+this.fridge+"/"+this.user);
             response = Connection.getJson(this.urlAPI+this.fridge+"/"+this.user+"/unlock");
             System.out.println("RESPONSE: "+response);
             lockStatus=response.getBoolean("lock");
         }catch (Exception e){
             System.out.println(e);
         }
-        //end test connection
         return lockStatus;
     }
 
-    public boolean postInventory (JSONObject json, Context context){
+    public boolean postInventory(JSONObject json){
         boolean lockStatus=true;
         JSONObject response;
         try {
-            String URL = this.urlAPI+this.fridge+"/purchases";
-            System.out.println("URL: "+ URL);
+            System.out.println("URL: "+this.urlAPI+this.fridge+"/"+this.user);
             LOGGER.log(Level.INFO, "Send JSONArray: "+json);
-            response = Connection.postJson(URL, json , context);
+            response = Connection.postJson(this.urlAPI+this.fridge+"/products",json);
             System.out.println("RESPONSE: "+response);
             lockStatus=response.getBoolean("lock");
         }catch (Exception e){
@@ -113,16 +104,12 @@ public class RemoteProxy extends AsyncTask {
         boolean lockStatus=true;
         String response;
         try {
-            String URL = this.urlAPI+this.fridge+"/purchases";
+            String URL = this.urlAPI+this.fridge+"/products";
             System.out.println("URL: "+ URL);
             LOGGER.log(Level.INFO, "Send JSONArray: "+code);
-            //togliere commento riga di sotto -ANDREA
-            //response = Connection.postString(URL, code, tv);
-            //lockStatus=response.getBoolean("lock");
         }catch (Exception e){
             System.out.println(e);
         }
-        //end test connection
         return lockStatus;
     }
 
@@ -137,15 +124,12 @@ public class RemoteProxy extends AsyncTask {
         }
         return null;
     }
-
-
+    
     public boolean postInventory3 (String code, TextView tv){
         boolean lockStatus=true;
         //String response;
         try {
-            //String URL = this.urlAPI+this.fridge+"/purchases";
-
-            URL url = new URL(this.urlAPI+this.fridge+"/purchases");
+            URL url = new URL(this.urlAPI+this.fridge+"/products");
             StringBuilder postData = new StringBuilder();
             //String code = "";
             String[] a = {"MOUSE, DVD, MONITOR"};
@@ -174,19 +158,11 @@ public class RemoteProxy extends AsyncTask {
             conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
             conn.connect();
             conn.getOutputStream().write(postDataBytes);
-            //OutputStream out = new BufferedOutputStream(conn.getOutputStream());
-            //writeStream(out);
             Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
             StringBuilder sb = new StringBuilder();
             for (int c; (c = in.read()) >= 0;)
                 sb.append((char)c);
             String response = sb.toString();
-            //System.out.println("RESPONSE: " + response);
-            //LOGGER.log(Level.INFO, "Send JSONArray: "+code);
-
-            //la riga sotto duplica la post....
-            //response = Connection.postString(url.toString(), code, tv);
-
             postData.append("{ \"purchase\": [" + code +" ] }");
             //lockStatus=response.getBoolean("lock");
         } catch (Exception e){
@@ -209,7 +185,7 @@ public class RemoteProxy extends AsyncTask {
         JSONObject response;
         //String response2;
         try {
-            String URL = this.urlAPI+this.fridge+"/purchases";
+            String URL = this.urlAPI+this.fridge+"/products";
             LOGGER.log(Level.INFO, "Send JSONArray: "+json);
             response = Connection.postJsonArray(URL, json);
             tv.append(response.toString());

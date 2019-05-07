@@ -1,11 +1,8 @@
 package com.network;
 
 
-import android.content.Context;
 import android.os.StrictMode;
 import android.util.Base64;
-import android.widget.TextView;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
@@ -31,17 +28,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.Socket;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.KeyStore;
 import java.security.cert.CertificateException;
@@ -209,64 +197,17 @@ public class Connection {
         return jsonObject;
     }
 
-
-    public static JSONObject postJson(String URL,JSONObject jsonObject, Context context) {
-
-        /*RequestQueue requestQueue = Volley.newRequestQueue(context);
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                jsonObject,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.e("Response:", response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Response:", error.toString());
-
-                    }
-                }
-        );
-
-        requestQueue.add(jsonRequest);
-        return jsonObject;*/
-
-
-        /*HttpClient httpclient = (new Connection()).getNewHttpClient();
-        System.out.println("url:"+url);
-        HttpPost request = new HttpPost(url);
-        HttpResponse response;
-        try {
-            StringEntity s = new StringEntity(jsonObject.toString());
-            s.setContentEncoding("UTF-8");
-            s.setContentType("application/json");
-            request.setEntity(s);
-            request.addHeader("accept", "application/json");
-            request.setHeader("Content-type", "application/json");
-            response = httpclient.execute(request);
-            jsonObject = new JSONObject(response.toString());
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return jsonObject;*/
-
-
-        System.out.println("Send request POST to address:" + URL);
-
+    public static JSONObject postJson(String URL,JSONObject jsonObjectToPost){
+        System.out.println("Send request POST to address:"+URL);
+        JSONObject jsonObject=null;
         HttpClient httpclient = (new Connection()).getNewHttpClient();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         HttpPost request = new HttpPost(URL);
-
         try {
-            // request.addHeader("auth", "UmVr4&n%$$t35MvDe2E*tYSe@tP4MmxD%4Sw8x-nhWJvybYCaP");
-            StringEntity stringEntity = new StringEntity(jsonObject.toString());
-            request.setEntity(stringEntity);
+            request.addHeader("auth","UmVr4&n%$$t35MvDe2E*tYSe@tP4MmxD%4Sw8x-nhWJvybYCaP");
+            StringEntity s = new StringEntity(jsonObjectToPost.toString());
+            request.setEntity(s);
             request.setHeader("Accept", "application/json");
             request.setHeader("Accept-language", "it-IT");
             request.setHeader("Content-type", "application/json");
@@ -274,7 +215,7 @@ public class Connection {
             String finalResult = EntityUtils.toString(result.getEntity());
             httpclient.getConnectionManager().shutdown();
             System.out.println(finalResult);
-            jsonObject = new JSONObject(finalResult);
+            jsonObject=new JSONObject(finalResult);
             return jsonObject;
         } catch (Exception e) {
             e.printStackTrace();
@@ -282,53 +223,15 @@ public class Connection {
         return jsonObject;
     }
 
-
-    public static String postString(String url, String code, TextView tv) {
-
-
-        //System.out.println("Send request POST to address:" + url);
-
+    public static JSONObject postJsonArray(String URL,JSONArray jsonArrayToPost){
+        System.out.println("Send request POST to address:"+URL);
+        JSONObject jsonObject=null;
         HttpClient httpclient = (new Connection()).getNewHttpClient();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        HttpPost request = new HttpPost(url);
-
+        HttpPost request = new HttpPost(URL);
         try {
-            // request.addHeader("auth", "UmVr4&n%$$t35MvDe2E*tYSe@tP4MmxD%4Sw8x-nhWJvybYCaP");
-            // StringEntity stringEntity = new StringEntity(code);
-            // tv.append("stringEntity:", stringEntity.getContent().);
-            // request.setEntity(stringEntity);
-
-            // request.setHeader("Accept", "application/json");
-            // request.setHeader("Accept-language", "it-IT");
-            // request.setHeader("Content-type", "application/json");
-
-            //String json = "{\"id\":1, \"name\":\"John\"}";
-            //StringEntity entity = new StringEntity(json);
-            //tv.append("entity:" + entity);
-            //request.setEntity(entity);
-
-            request.setHeader("Accept", "application/json");
-            request.setHeader("Content-type", "application/json");
-            HttpResponse result = httpclient.execute(request);
-            tv.append("result:" + result);
-            String finalResult = EntityUtils.toString(result.getEntity());
-            httpclient.getConnectionManager().shutdown();
-            return result.toString() + "|||" + finalResult;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return code;
-    }
-
-    public static JSONObject postJsonArray(String url,JSONArray jsonArrayToPost){
-        System.out.println("Send request POST to address:"+url);
-        JSONObject jsonObject = null;
-        HttpClient httpclient = (new Connection()).getNewHttpClient();
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        HttpPost request = new HttpPost(url);
-        try {
+            request.addHeader("auth","UmVr4&n%$$t35MvDe2E*tYSe@tP4MmxD%4Sw8x-nhWJvybYCaP");
             StringEntity s = new StringEntity(jsonArrayToPost.toString());
             request.setEntity(s);
             request.setHeader("Accept", "application/json");
@@ -338,63 +241,12 @@ public class Connection {
             String finalResult = EntityUtils.toString(result.getEntity());
             httpclient.getConnectionManager().shutdown();
             System.out.println(finalResult);
-            jsonObject = new JSONObject(finalResult);
+            jsonObject=new JSONObject(finalResult);
             return jsonObject;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return jsonObject;
-    }
-
-
-    public static String excutePost(String targetURL, JSONObject urlParameters) {
-        URL url;
-        HttpURLConnection connection = null;
-        try {
-
-            //Create connection
-            url = new URL(targetURL);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type",
-                    "application/raw");
-            connection.setRequestProperty("Content-Length", "" +
-                    Integer.toString(urlParameters.toString().getBytes().length));
-            connection.setRequestProperty("Content-Language", "en-US");
-            connection.setUseCaches(false);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-
-            //Send request
-            OutputStream out = new BufferedOutputStream(connection.getOutputStream());
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-            writer.write(String.valueOf(urlParameters.toString().getBytes("UTF-8")));
-            out.close();
-            //connection.disconnect();
-
-            //Get Response
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuffer response = new StringBuffer();
-            while ((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
-            }
-            rd.close();
-            return response.toString();
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-            return null;
-
-        } finally {
-
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
     }
 
     public class MySSLSocketFactory extends SSLSocketFactory {
@@ -453,7 +305,7 @@ public class Connection {
         }
     }
 
-    public enum TypeOfConnection{PUT, POST, DELETE}
+    public enum TypeOfConnection{PUT, POST,DELETE}
 
 
 

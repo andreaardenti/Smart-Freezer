@@ -1,6 +1,7 @@
 package com.fridge;
 
 import android.content.Context;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -30,9 +32,16 @@ public class Inventory{
     private ADReaderInterface m_reader = new ADReaderInterface();
 
 
-    /* public JSONObject vectorISO15693TagToJsonObject(Vector<ISO15693Tag> tagVector){
+     public JSONObject vectorISO15693TagToJsonObject(Vector<ISO15693Tag> tagVector){
         JSONObject json=new JSONObject();
-        JSONArray jsonArray=new JSONArray(tagVector);
+
+        Vector<String> uidTags=new Vector<>();
+         if (tagVector != null) {
+             for (Iterator it = tagVector.iterator(); it.hasNext();) {
+                 uidTags.add(Base64.encodeToString(((ISO15693Tag)it.next()).uid, Base64.NO_WRAP));
+             }
+         }
+        JSONArray jsonArray=new JSONArray(uidTags);
         try {
             json.put("purchase",jsonArray);
 
@@ -41,7 +50,7 @@ public class Inventory{
         }
         System.out.println("JSON OBJ: " + json);
         return json;
-    }*/
+    }
 
 
     public Vector<ISO15693Tag> readTagsList(ADReaderInterface m_reader){
